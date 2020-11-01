@@ -35,28 +35,28 @@ wipefs -af /dev/nvme0n1 > /dev/null 2>&1
 wipefs -af /dev/nvme0n2 > /dev/null 2>&1
 wipefs -af /dev/sda > /dev/null 2>&1
 wipefs -af /dev/sdb > /dev/null 2>&1
-dd bs=512 if=/dev/zero of=/dev/nvme0n1 count=2048 > /dev/null 2>&1
-dd bs=512 if=/dev/zero of=/dev/nvme0n1 count=2048 seek=$((`blockdev --getsz /dev/nvme0n1` - 2048)) > /dev/null 2>&1
-dd bs=512 if=/dev/zero of=/dev/nvme0n2 count=2048 > /dev/null 2>&1
-dd bs=512 if=/dev/zero of=/dev/nvme0n2 count=2048 seek=$((`blockdev --getsz /dev/nvme0n2` - 2048)) > /dev/null 2>&1
-dd bs=512 if=/dev/zero of=/dev/sda count=2048 > /dev/null 2>&1
-dd bs=512 if=/dev/zero of=/dev/sda count=2048 seek=$((`blockdev --getsz /dev/sda` - 2048)) > /dev/null 2>&1
-dd bs=512 if=/dev/zero of=/dev/sdb count=2048 > /dev/null 2>&1
-dd bs=512 if=/dev/zero of=/dev/sdb count=2048 seek=$((`blockdev --getsz /dev/sdb` - 2048)) > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n1 count=2048 # > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n1 count=2048 seek=$((`blockdev --getsz /dev/nvme0n1` - 2048)) # > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n2 count=2048 # > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n2 count=2048 seek=$((`blockdev --getsz /dev/nvme0n2` - 2048)) # > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/sda count=2048 # > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/sda count=2048 seek=$((`blockdev --getsz /dev/sda` - 2048)) # > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/sdb count=2048 # > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/sdb count=2048 seek=$((`blockdev --getsz /dev/sdb` - 2048)) # > /dev/null 2>&1
 
 echo "Creating partition tables"
 printf "n\n1\n2048\n512M\nef00\nw\ny\n" | gdisk /dev/nvme0n1
 printf "n\n2\n\n\n8e00\nw\ny\n" | gdisk /dev/nvme0n1
 
 echo "Wiping Filesystems"
-dd bs=512 if=/dev/zero of=/dev/nvme0n1p1 count=2048 > /dev/null 2>&1
-dd bs=512 if=/dev/zero of=/dev/nvme0n1p1 count=2048 seek=$((`blockdev --getsz /dev/nvme0n1p1` - 2048)) > /dev/null 2>&1
-dd bs=512 if=/dev/zero of=/dev/nvme0n1p2 count=2048 > /dev/null 2>&1
-dd bs=512 if=/dev/zero of=/dev/nvme0n1p2 count=2048 seek=$((`blockdev --getsz /dev/nvme0n1p2` - 2048)) > /dev/null 2>&1
-dd bs=512 if=/dev/zero of=/dev/nvme0n2p1 count=2048 > /dev/null 2>&1
-dd bs=512 if=/dev/zero of=/dev/nvme0n2p1 count=2048 seek=$((`blockdev --getsz /dev/nvme0n2p1` - 2048)) > /dev/null 2>&1
-dd bs=512 if=/dev/zero of=/dev/nvme0n2p2 count=2048 > /dev/null 2>&1
-dd bs=512 if=/dev/zero of=/dev/nvme0n2p2 count=2048 seek=$((`blockdev --getsz /dev/nvme0n2p2` - 2048)) > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n1p1 count=2048 # > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n1p1 count=2048 seek=$((`blockdev --getsz /dev/nvme0n1p1` - 2048)) # > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n1p2 count=2048 # > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n1p2 count=2048 seek=$((`blockdev --getsz /dev/nvme0n1p2` - 2048)) # > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n2p1 count=2048 # > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n2p1 count=2048 seek=$((`blockdev --getsz /dev/nvme0n2p1` - 2048)) # > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n2p2 count=2048 # > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n2p2 count=2048 seek=$((`blockdev --getsz /dev/nvme0n2p2` - 2048)) # > /dev/null 2>&1
 
 #cat /dev/zero > /dev/nvme0n1p1 > /dev/null 2>&1
 #cat /dev/zero > /dev/nvme0n1p2 > /dev/null 2>&1
@@ -99,7 +99,7 @@ yes | mkswap /dev/vg0/swap
 swapon /dev/vg0/swap
 
 echo "Installing Arch Linux"
-yes '' | pacstrap /mnt base base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware lvm2 device-mapper e2fsprogs $cpu_microcode cryptsetup networkmanager wget man-db man-pages nano diffutils flatpak lm_sensors neofetch nmon lshw dhclient f2fs-tools grub man-db nano openssh screen vim which bonnie++ python atop sysstat networkmanager nfs-utils open-iscsi fish multipath-tools open-vm-tools iperf iperf3 time hdparm git
+yes '' | pacstrap /mnt base base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware lvm2 device-mapper e2fsprogs $cpu_microcode cryptsetup networkmanager wget man-db man-pages nano diffutils flatpak lm_sensors neofetch nmon lshw dhclient f2fs-tools grub man-db nano openssh screen vim which bonnie++ python atop sysstat networkmanager nfs-utils open-iscsi fish multipath-tools open-vm-tools iperf iperf3 time hdparm git fio bc pv gnuplot msmtp mailx
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -208,9 +208,30 @@ cd /opt
 git clone https://aur.archlinux.org/yay-git.git
 chown -R anon:anon ./yay-git
 su anon
-makepkg -si
+cd /opt/yay-git
+makepkg -sicr --noconfirm
 yay -Syu --devel --timeupdate
-yay -Yc
+sudo su
+
+echo "Installing S"
+cd /opt
+git clone https://github.com/Algodev-github/S.git
+chown -R anon:anon ./yay-git
+su anon
+cd /opt/S
+makepkg -sicr --noconfirm
+yay -Syu --devel --timeupdate
+
+#yay dep cleanup
+#yay -Yc
+yay -S unixbench --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+yay -S interbench --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+yay -S pscheduler --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+yay -S nuttcp --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+yay -S iozone --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+yay -S phoronix-test-suite --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 EOF
 
 umount -R /mnt
