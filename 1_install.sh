@@ -53,7 +53,7 @@ lvcreate -L +"$swap_size"GB vg0 -n swap
 lvcreate -l +100%FREE vg0 -n root
 
 echo "Setting up / partition"
-yes | mkfs.ext4 /dev/vg0/root
+yes | mkfs.f2fs /dev/vg0/root
 mount /dev/vg0/root /mnt
 
 echo "Setting up /boot partition"
@@ -66,7 +66,7 @@ yes | mkswap /dev/vg0/swap
 swapon /dev/vg0/swap
 
 echo "Installing Arch Linux"
-yes '' | pacstrap /mnt base base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware lvm2 device-mapper e2fsprogs $cpu_microcode cryptsetup networkmanager wget man-db man-pages nano diffutils flatpak lm_sensors
+yes '' | pacstrap /mnt base base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware lvm2 device-mapper e2fsprogs $cpu_microcode cryptsetup networkmanager wget man-db man-pages nano diffutils flatpak lm_sensors neofetch nmon lshw dhclient f2fs-tools grub man-db nano openssh screen vim which bonnie++ python atop sysstat networkmanager nfs-utils open-iscsi fish multipath-tools open-vm-tools iperf iperf3 time hdparm
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -151,6 +151,10 @@ When = PostTransaction
 Exec = /usr/bin/bootctl update
 END
 
+echo "Enabling SSHD"
+echo "permitrootlogin yes" >> /etc/ssh/sshd_config
+systemctl enable sshd
+
 echo "Enabling periodic TRIM"
 systemctl enable fstrim.timer
 
@@ -165,3 +169,4 @@ umount -R /mnt
 swapoff -a
 
 echo "Arch Linux is ready. You can reboot now!"
+reboot
