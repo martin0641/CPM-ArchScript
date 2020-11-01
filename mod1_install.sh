@@ -3,16 +3,16 @@
 encryption_passphrase="123!@#qweQWE"
 root_password="123!@#qweQWE"
 user_password="123!@#qweQWE"
-hostname="archscripts"
+hostname="archmin"
 user_name="anon"
-continent_city="America/New_York"
+continent_city="New_York"
 swap_size="1"
 
 # Set different microcode, kernel params and initramfs modules according to CPU vendor
 cpu_vendor=$(cat /proc/cpuinfo | grep vendor | uniq)
 cpu_microcode=""
 kernel_options=""
-initramfs_modules="f2fs"
+initramfs_modules=""
 if [[ $cpu_vendor =~ "AuthenticAMD" ]]
 then
  cpu_microcode="amd-ucode"
@@ -30,22 +30,13 @@ timedatectl set-ntp true
 echo "Syncing packages database"
 pacman -Sy --noconfirm
 
-echo "Wiping Disks"
-wipefs /dev/nvme0n1
-wipefs /dev/nvme0n2
-
 echo "Creating partition tables"
 printf "n\n1\n4096\n+512M\nef00\nw\ny\n" | gdisk /dev/nvme0n1
 printf "n\n2\n\n\n8e00\nw\ny\n" | gdisk /dev/nvme0n1
-printf "n\n1\n4096\n+512M\nef00\nw\ny\n" | gdisk /dev/nvme0n2
-printf "n\n2\n\n\n8e00\nw\ny\n" | gdisk /dev/nvme0n2
 
-
-echo "Zeroing partitions"
-cat /dev/zero > /dev/nvme0n1p1
-cat /dev/zero > /dev/nvme0n1p2
-cat /dev/zero > /dev/nvme0n2p1
-cat /dev/zero > /dev/nvme0n2p2
+# echo "Zeroing partitions"
+# cat /dev/zero > /dev/nvme0n1p1
+# cat /dev/zero > /dev/nvme0n1p2
 
 echo "Setting up cryptographic volume"
 printf "%s" "$encryption_passphrase" | cryptsetup -h sha512 -s 512 --use-random --type luks2 luksFormat /dev/nvme0n1p2
@@ -53,38 +44,29 @@ printf "%s" "$encryption_passphrase" | cryptsetup luksOpen /dev/nvme0n1p2 cryptl
 
 echo "Creating physical volume"
 pvcreate /dev/mapper/cryptlvm
-pvcreate /dev/nvme0n2
 
 echo "Creating volume volume"
 vgcreate vg0 /dev/mapper/cryptlvm
-vgcreate vg0 /dev/nvme0n2
 
 echo "Creating logical volumes"
 lvcreate -L +"$swap_size"GB vg0 -n swap
 lvcreate -l +100%FREE vg0 -n root
-lvcreate -l +100%FREE vg1 -n data
 
 echo "Setting up / partition"
 yes | mkfs.f2fs /dev/vg0/root
 mount /dev/vg0/root /mnt
-yes | mkfs.f2fs /dev/vg1/data
 
 echo "Setting up /boot partition"
 yes | mkfs.fat -F32 /dev/nvme0n1p1
 mkdir /mnt/boot
 mount /dev/nvme0n1p1 /mnt/boot
 
-echo "Setting up /data partition"
-yes | mkfs.f2fs /dev/nvme0n2p1
-mkdir /mnt/data
-mount /dev/nvme0n1p2 /mnt/data
-
 echo "Setting up swap"
 yes | mkswap /dev/vg0/swap
 swapon /dev/vg0/swap
 
-echo "Installing Arch Linux"
 yes '' | pacstrap /mnt base base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware lvm2 device-mapper e2fsprogs $cpu_microcode cryptsetup networkmanager wget man-db man-pages nano diffutils flatpak lm_sensors neofetch nmon lshw dhclient f2fs-tools grub man-db nano openssh screen vim which bonnie++ python atop sysstat networkmanager nfs-utils open-iscsi fish multipath-tools open-vm-tools iperf iperf3 time hdparm
+echo "Installing Arch Linux"
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -108,9 +90,6 @@ echo $hostname > /etc/hostname
 
 echo "Setting root password"
 echo -en "$root_password\n$root_password" | passwd
-
-echo "Setting root shell"
-echo -en "chsh -s /bin/fish"
 
 echo "Creating new user"
 useradd -m -G wheel -s /bin/bash $user_name
@@ -172,10 +151,6 @@ When = PostTransaction
 Exec = /usr/bin/bootctl update
 END
 
-echo "Enabling SSHD"
-echo "permitrootlogin yes" >> /etc/ssh/sshd_config
-systemctl enable sshd
-
 echo "Enabling periodic TRIM"
 systemctl enable fstrim.timer
 
@@ -190,4 +165,3 @@ umount -R /mnt
 swapoff -a
 
 echo "Arch Linux is ready. You can reboot now!"
-reboot
