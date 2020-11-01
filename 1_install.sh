@@ -31,21 +31,30 @@ echo "Syncing packages database"
 pacman -Sy --noconfirm
 
 echo "Wiping Disks"
-wipefs /dev/nvme0n1
-wipefs /dev/nvme0n2
+wipefs -af /dev/nvme0n1 > /dev/null 2>&1
+wipefs -af /dev/nvme0n2 > /dev/null 2>&1
+wipefs -af /dev/sda > /dev/null 2>&1
+wipefs -af /dev/sdb > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n1 count=2048 > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n1 count=2048 seek=$((`blockdev --getsz /dev/nvme0n1` - 2048)) > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n2 count=2048 > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n2 count=2048 seek=$((`blockdev --getsz /dev/nvme0n2` - 2048)) > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/sda count=2048 > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/sda count=2048 seek=$((`blockdev --getsz /dev/sda` - 2048)) > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/sdb count=2048 > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/sdb count=2048 seek=$((`blockdev --getsz /dev/sdb` - 2048)) > /dev/null 2>&1
 
 echo "Creating partition tables"
-printf "n\n1\n4096\n+512M\nef00\nw\ny\n" | gdisk /dev/nvme0n1
+printf "n\n1\n2048\n512M\nef00\nw\ny\n" | gdisk /dev/nvme0n1
 printf "n\n2\n\n\n8e00\nw\ny\n" | gdisk /dev/nvme0n1
-printf "n\n1\n4096\n+512M\nef00\nw\ny\n" | gdisk /dev/nvme0n2
-printf "n\n2\n\n\n8e00\nw\ny\n" | gdisk /dev/nvme0n2
 
-
-echo "Zeroing partitions"
-cat /dev/zero > /dev/nvme0n1p1
-cat /dev/zero > /dev/nvme0n1p2
-cat /dev/zero > /dev/nvme0n2p1
-cat /dev/zero > /dev/nvme0n2p2
+echo "Wiping Filesystems"
+wipefs -af /dev/dm-0 > /dev/null 2>&1
+wipefs -af /dev/dm-1 > /dev/null 2>&1
+cat /dev/zero > /dev/nvme0n1p1 > /dev/null 2>&1
+cat /dev/zero > /dev/nvme0n1p2 > /dev/null 2>&1
+cat /dev/zero > /dev/nvme0n2p1 > /dev/null 2>&1
+cat /dev/zero > /dev/nvme0n2p2 > /dev/null 2>&1
 
 echo "Setting up cryptographic volume"
 printf "%s" "$encryption_passphrase" | cryptsetup -h sha512 -s 512 --use-random --type luks2 luksFormat /dev/nvme0n1p2
@@ -57,7 +66,7 @@ pvcreate /dev/nvme0n2
 
 echo "Creating volume volume"
 vgcreate vg0 /dev/mapper/cryptlvm
-vgcreate vg0 /dev/nvme0n2
+vgcreate vg1 /dev/nvme0n2
 
 echo "Creating logical volumes"
 lvcreate -L +"$swap_size"GB vg0 -n swap
@@ -67,7 +76,6 @@ lvcreate -l +100%FREE vg1 -n data
 echo "Setting up / partition"
 yes | mkfs.f2fs /dev/vg0/root
 mount /dev/vg0/root /mnt
-yes | mkfs.f2fs /dev/vg1/data
 
 echo "Setting up /boot partition"
 yes | mkfs.fat -F32 /dev/nvme0n1p1
@@ -75,7 +83,7 @@ mkdir /mnt/boot
 mount /dev/nvme0n1p1 /mnt/boot
 
 echo "Setting up /data partition"
-yes | mkfs.f2fs /dev/nvme0n2p1
+yes | mkfs.f2fs /dev/vg1/data
 mkdir /mnt/data
 mount /dev/nvme0n1p2 /mnt/data
 
@@ -183,8 +191,10 @@ systemctl enable fstrim.timer
 echo "Enabling NetworkManager"
 systemctl enable NetworkManager
 
-echo "Adding user as a sudoer"
-echo '%wheel ALL=(ALL) ALL' | EDITOR='tee -a' visudo
+echo "Modifying SUDO"
+echo 'anon ALL=(ALL:ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo
+echo '%wheel ALL=(ALL:ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo
+echo '%admin ALL=(ALL:ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo
 
 echo "Installing YAY"
 cd /opt
