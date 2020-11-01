@@ -84,7 +84,7 @@ yes | mkswap /dev/vg0/swap
 swapon /dev/vg0/swap
 
 echo "Installing Arch Linux"
-yes '' | pacstrap /mnt base base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware lvm2 device-mapper e2fsprogs $cpu_microcode cryptsetup networkmanager wget man-db man-pages nano diffutils flatpak lm_sensors neofetch nmon lshw dhclient f2fs-tools grub man-db nano openssh screen vim which bonnie++ python atop sysstat networkmanager nfs-utils open-iscsi fish multipath-tools open-vm-tools iperf iperf3 time hdparm
+yes '' | pacstrap /mnt base base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware lvm2 device-mapper e2fsprogs $cpu_microcode cryptsetup networkmanager wget man-db man-pages nano diffutils flatpak lm_sensors neofetch nmon lshw dhclient f2fs-tools grub man-db nano openssh screen vim which bonnie++ python atop sysstat networkmanager nfs-utils open-iscsi fish multipath-tools open-vm-tools iperf iperf3 time hdparm git
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -110,7 +110,7 @@ echo "Setting root password"
 echo -en "$root_password\n$root_password" | passwd
 
 echo "Setting shells"
-echo -en "chsh -s /bin/fish"
+echo -en "chsh -s /bin/fish root"
 echo -en "chsh -s /bin/fish $user_name"
 
 echo "Creating new user"
@@ -185,6 +185,15 @@ systemctl enable NetworkManager
 
 echo "Adding user as a sudoer"
 echo '%wheel ALL=(ALL) ALL' | EDITOR='tee -a' visudo
+
+echo "Installing YAY"
+cd /opt
+git clone https://aur.archlinux.org/yay-git.git
+chown -R anon:anon ./yay-git
+su anon
+makepkg -si
+yay -Syu --devel --timeupdate
+yay -Yc
 EOF
 
 umount -R /mnt
