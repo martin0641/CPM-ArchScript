@@ -109,8 +109,9 @@ echo $hostname > /etc/hostname
 echo "Setting root password"
 echo -en "$root_password\n$root_password" | passwd
 
-echo "Setting root shell"
+echo "Setting shells"
 echo -en "chsh -s /bin/fish"
+echo -en "chsh -s /bin/fish $user_name"
 
 echo "Creating new user"
 useradd -m -G wheel -s /bin/bash $user_name
