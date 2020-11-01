@@ -49,12 +49,19 @@ printf "n\n1\n2048\n512M\nef00\nw\ny\n" | gdisk /dev/nvme0n1
 printf "n\n2\n\n\n8e00\nw\ny\n" | gdisk /dev/nvme0n1
 
 echo "Wiping Filesystems"
-wipefs -af /dev/dm-0 > /dev/null 2>&1
-wipefs -af /dev/dm-1 > /dev/null 2>&1
-cat /dev/zero > /dev/nvme0n1p1 > /dev/null 2>&1
-cat /dev/zero > /dev/nvme0n1p2 > /dev/null 2>&1
-cat /dev/zero > /dev/nvme0n2p1 > /dev/null 2>&1
-cat /dev/zero > /dev/nvme0n2p2 > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n1p1 count=2048 > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n1p1 count=2048 seek=$((`blockdev --getsz /dev/nvme0n1p1` - 2048)) > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n1p2 count=2048 > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n1p2 count=2048 seek=$((`blockdev --getsz /dev/nvme0n1p2` - 2048)) > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n2p1 count=2048 > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n2p1 count=2048 seek=$((`blockdev --getsz /dev/nvme0n2p1` - 2048)) > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n2p2 count=2048 > /dev/null 2>&1
+dd bs=512 if=/dev/zero of=/dev/nvme0n2p2 count=2048 seek=$((`blockdev --getsz /dev/nvme0n2p2` - 2048)) > /dev/null 2>&1
+
+#cat /dev/zero > /dev/nvme0n1p1 > /dev/null 2>&1
+#cat /dev/zero > /dev/nvme0n1p2 > /dev/null 2>&1
+#cat /dev/zero > /dev/nvme0n2p1 > /dev/null 2>&1
+#cat /dev/zero > /dev/nvme0n2p2 > /dev/null 2>&1
 
 echo "Setting up cryptographic volume"
 printf "%s" "$encryption_passphrase" | cryptsetup -h sha512 -s 512 --use-random --type luks2 luksFormat /dev/nvme0n1p2
