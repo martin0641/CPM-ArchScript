@@ -1,12 +1,12 @@
 #!/bin/bash
 
-encryption_passphrase=""
-root_password=""
-user_password=""
-hostname=""
-user_name=""
-continent_city=""
-swap_size="16"
+encryption_passphrase="123!@#qweQWE"
+root_password="123!@#qweQWE"
+user_password="123!@#qweQWE"
+hostname="archscripts"
+user_name="anon"
+continent_city="America/New_York"
+swap_size="1"
 
 # Set different microcode, kernel params and initramfs modules according to CPU vendor
 cpu_vendor=$(cat /proc/cpuinfo | grep vendor | uniq)
