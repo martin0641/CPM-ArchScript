@@ -272,10 +272,10 @@ yay -S unixbench --answerclean all --answerdiff none --answeredit none --answeru
 yay -S interbench --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S pscheduler --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S nuttcp --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-yay -S iozone --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S phoronix-test-suite-git --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+yay -S iozone --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 EOF
 
 umount -R /mnt
