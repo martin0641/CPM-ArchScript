@@ -217,7 +217,7 @@ sudo su
 echo "Installing S"
 cd /opt
 git clone https://github.com/Algodev-github/S.git
-chown -R anon:anon ./yay-git
+chown -R anon:anon ./S
 su anon
 cd /opt/S
 makepkg -sicr --noconfirm
@@ -261,7 +261,7 @@ echo "Installing PowerCLI"
 pwsh
 install-module -name VMware.PowerCLI
 A
-Set-PowerCLIConfiguration -Scope User -ParticipateInCEIP $false
+Set-PowerCLIConfiguration -Scope User -ParticipateInCEIP false
 A
 exit
 sudo su
