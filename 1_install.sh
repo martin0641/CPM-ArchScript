@@ -70,16 +70,16 @@ printf "%s" "$encryption_passphrase" | cryptsetup luksOpen /dev/nvme0n1p2 cryptl
 
 echo "Creating physical volume"
 pvcreate /dev/mapper/cryptlvm
-pvcreate /dev/nvme0n2
+#pvcreate /dev/nvme0n2
 
 echo "Creating volume volume"
 vgcreate vg0 /dev/mapper/cryptlvm
-vgcreate vg1 /dev/nvme0n2
+#vgcreate vg1 /dev/nvme0n2
 
 echo "Creating logical volumes"
 lvcreate -L +"$swap_size"GB vg0 -n swap
 lvcreate -l +100%FREE vg0 -n root
-lvcreate -l +100%FREE vg1 -n data
+#lvcreate -l +100%FREE vg1 -n data
 
 echo "Setting up / partition"
 yes | mkfs.f2fs /dev/vg0/root
@@ -90,10 +90,10 @@ yes | mkfs.fat -F32 /dev/nvme0n1p1
 mkdir /mnt/boot
 mount /dev/nvme0n1p1 /mnt/boot
 
-echo "Setting up /data partition"
-yes | mkfs.f2fs /dev/vg1/data
-mkdir /mnt/data
-mount /dev/nvme0n2p1 /mnt/data
+#echo "Setting up /data partition"
+#yes | mkfs.f2fs /dev/vg1/data
+#mkdir /mnt/data
+#mount /dev/nvme0n2p1 /mnt/data
 
 echo "Setting up swap"
 yes | mkswap /dev/vg0/swap
@@ -282,4 +282,4 @@ umount -R /mnt
 swapoff -a
 
 echo "Arch Linux is ready. You can reboot now!"
-reboot
+#reboot
