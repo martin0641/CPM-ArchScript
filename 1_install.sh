@@ -47,6 +47,7 @@ dd bs=512 if=/dev/zero of=/dev/sdb count=2048 seek=$((`blockdev --getsz /dev/sdb
 echo "Creating partition tables"
 printf "n\n1\n2048\n512M\nef00\nw\ny\n" | gdisk /dev/nvme0n1
 printf "n\n2\n\n\n8e00\nw\ny\n" | gdisk /dev/nvme0n1
+printf "n\n1\n\n\n8e00\nw\ny\n" | gdisk /dev/nvme0n2
 
 echo "Wiping Filesystems"
 dd bs=512 if=/dev/zero of=/dev/nvme0n1p1 count=2048 # > /dev/null 2>&1
@@ -92,14 +93,14 @@ mount /dev/nvme0n1p1 /mnt/boot
 echo "Setting up /data partition"
 yes | mkfs.f2fs /dev/vg1/data
 mkdir /mnt/data
-mount /dev/nvme0n1p2 /mnt/data
+mount /dev/nvme0n2p1 /mnt/data
 
 echo "Setting up swap"
 yes | mkswap /dev/vg0/swap
 swapon /dev/vg0/swap
 
 echo "Installing Arch Linux"
-yes '' | pacstrap /mnt base base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware lvm2 device-mapper e2fsprogs $cpu_microcode cryptsetup networkmanager wget man-db man-pages nano diffutils flatpak lm_sensors neofetch nmon lshw dhclient f2fs-tools grub man-db nano openssh screen vim which bonnie++ python atop sysstat networkmanager nfs-utils open-iscsi fish multipath-tools open-vm-tools iperf iperf3 time hdparm git fio bc pv gnuplot msmtp mailx
+yes '' | pacstrap /mnt base base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware lvm2 device-mapper e2fsprogs $cpu_microcode cryptsetup networkmanager wget man-db man-pages nano diffutils flatpak lm_sensors neofetch nmon lshw dhclient f2fs-tools grub man-db nano openssh screen vim which bonnie++ python atop sysstat networkmanager nfs-utils open-iscsi fish multipath-tools open-vm-tools iperf time hdparm git fio bc pv gnuplot msmtp mailx gptfdisk aurpublish lynx
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -221,6 +222,49 @@ su anon
 cd /opt/S
 makepkg -sicr --noconfirm
 yay -Syu --devel --timeupdate
+sudo su
+
+echo "Installing iperf3"
+cd /opt
+git clone https://github.com/esnet/iperf.git
+mv iperf iperf3
+chown -R anon:anon ./iperf3
+su anon
+cd /opt/iperf3
+./configure
+make
+sudo make install
+sudo su
+
+echo "Installing iperf"
+cd /opt
+git clone https://github.com/esnet/iperf.git
+chown -R anon:anon ./iperf2-code
+su anon
+cd /opt/iperf2-code
+./configure
+make
+sudo make install
+sudo su
+
+echo "Installing Powershell"
+curl -L -o /tmp/powershell.tar.gz https://github.com/PowerShell/PowerShell/releases/download/v7.1.0-rc.2/powershell-7.1.0-rc.2-linux-x64.tar.gz
+sudo mkdir -p /opt/microsoft/powershell/7
+chown -R anon:anon /opt/microsoft
+su anon
+sudo tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
+sudo chmod +x /opt/microsoft/powershell/7/pwsh
+sudo ln -s /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
+sudo su
+
+echo "Installing PowerCLI"
+pwsh
+install-module -name VMware.PowerCLI
+A
+Set-PowerCLIConfiguration -Scope User -ParticipateInCEIP $false
+A
+exit
+sudo su
 
 #yay dep cleanup
 #yay -Yc
@@ -230,7 +274,7 @@ yay -S pscheduler --answerclean all --answerdiff none --answeredit none --answer
 yay -S nuttcp --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S iozone --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-yay -S phoronix-test-suite --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+yay -S phoronix-test-suite-git --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 EOF
 
