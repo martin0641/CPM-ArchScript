@@ -225,7 +225,7 @@ cd /opt
 git clone https://github.com/esnet/iperf.git
 mv iperf iperf3
 chown -R anon:anon ./iperf3
-su anon
+sudo su anon
 cd /opt/iperf3
 ./configure
 make
@@ -247,6 +247,7 @@ echo "Installing Powershell"
 curl -L -o /tmp/powershell.tar.gz https://github.com/PowerShell/PowerShell/releases/download/v7.1.0-rc.2/powershell-7.1.0-rc.2-linux-x64.tar.gz
 sudo mkdir -p /opt/microsoft/powershell/7
 chown -R anon:anon /opt/microsoft
+Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
 su anon
 sudo tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
 sudo chmod +x /opt/microsoft/powershell/7/pwsh
@@ -256,10 +257,11 @@ sudo su
 echo "Installing PowerCLI"
 pwsh
 install-module -name VMware.PowerCLI -force
-Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
+echo "Set-PowerCLIConfiguration -Scope AllUsers -ParticipateInCeip $false -InvalidCertificateAction Ignore"
 exit
 pwsh
-Set-PowerCLIConfiguration -Scope User -ParticipateInCEIP $false -Confirm:$false
+install-module -name Posh-SSH
+Find-Module -Name vmware* | install-module
 exit
 sudo su
 
