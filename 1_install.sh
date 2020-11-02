@@ -207,18 +207,16 @@ echo '%admin ALL=(ALL:ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo
 echo "Installing YAY"
 cd /opt
 git clone https://aur.archlinux.org/yay-git.git
-chown -R anon:anon ./yay-git
+chown -R anon:anon /opt/yay-git
 su anon
 cd /opt/yay-git
 makepkg -sicr --noconfirm
-yay -Syu --devel --timeupdate
 sudo su
 
 echo "Installing S"
 cd /opt
 git clone https://github.com/Algodev-github/S.git
-chown -R anon:anon ./S
-su anon
+chown -R anon:anon /opt/S
 
 echo "Installing iperf3"
 cd /opt
