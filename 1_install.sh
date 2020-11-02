@@ -261,10 +261,8 @@ pwsh
 install-module -name Posh-SSH
 Find-Module -Name vmware* | install-module
 exit
-sudo su
 
-#yay dep cleanup
-#yay -Yc
+
 yay -S unixbench --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S interbench --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S pscheduler --answerclean all --answerdiff none --answeredit none --answerupgrade 1
@@ -272,7 +270,10 @@ yay -S nuttcp --answerclean all --answerdiff none --answeredit none --answerupgr
 yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S phoronix-test-suite-git --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-yay -S iozone --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+#yay -S iozone --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+#N
+yay dep cleanup
+yay -Yc
 EOF
 
 #umount -R /mnt
