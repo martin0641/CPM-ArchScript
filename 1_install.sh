@@ -245,7 +245,6 @@ echo "Installing Powershell"
 curl -L -o /tmp/powershell.tar.gz https://github.com/PowerShell/PowerShell/releases/download/v7.1.0-rc.2/powershell-7.1.0-rc.2-linux-x64.tar.gz
 sudo mkdir -p /opt/microsoft/powershell/7
 chown -R anon:anon /opt/microsoft
-Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
 su anon
 sudo tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
 sudo chmod +x /opt/microsoft/powershell/7/pwsh
@@ -254,8 +253,9 @@ sudo su
 
 echo "Installing PowerCLI"
 pwsh
+Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
 install-module -name VMware.PowerCLI -force
-echo "Set-PowerCLIConfiguration -Scope AllUsers -ParticipateInCeip $false -InvalidCertificateAction Ignore"
+Set-PowerCLIConfiguration -Scope AllUsers -ParticipateInCeip $false -Confirm:$false -InvalidCertificateAction Ignore
 exit
 pwsh
 install-module -name Posh-SSH
