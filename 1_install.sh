@@ -257,6 +257,8 @@ echo "Installing PowerCLI"
 pwsh
 install-module -name VMware.PowerCLI -force
 Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
+exit
+pwsh
 Set-PowerCLIConfiguration -Scope User -ParticipateInCEIP $false -Confirm:$false
 exit
 sudo su
@@ -273,8 +275,8 @@ yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgr
 yay -S iozone --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 EOF
 
-umount -R /mnt
-swapoff -a
+#umount -R /mnt
+#swapoff -a
 
-echo "Arch Linux is ready. You can reboot now!"
+#echo "Arch Linux is ready. You can reboot now!"
 #reboot
