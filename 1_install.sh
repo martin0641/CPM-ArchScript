@@ -255,12 +255,9 @@ sudo su
 
 echo "Installing PowerCLI"
 pwsh
-install-module -name VMware.PowerCLI
-A
-Set-PowerCLIConfiguration -Scope User -ParticipateInCEIP $false
-A
-
-
+install-module -name VMware.PowerCLI -force
+Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
+Set-PowerCLIConfiguration -Scope User -ParticipateInCEIP $false -Confirm:$false
 exit
 sudo su
 
