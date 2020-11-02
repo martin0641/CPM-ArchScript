@@ -219,10 +219,6 @@ cd /opt
 git clone https://github.com/Algodev-github/S.git
 chown -R anon:anon ./S
 su anon
-cd /opt/S
-makepkg -sicr --noconfirm
-yay -Syu --devel --timeupdate
-sudo su
 
 echo "Installing iperf3"
 cd /opt
@@ -261,8 +257,10 @@ echo "Installing PowerCLI"
 pwsh
 install-module -name VMware.PowerCLI
 A
-Set-PowerCLIConfiguration -Scope User -ParticipateInCEIP false
+Set-PowerCLIConfiguration -Scope User -ParticipateInCEIP $false
 A
+
+
 exit
 sudo su
 
