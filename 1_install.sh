@@ -255,7 +255,7 @@ echo "Installing PowerCLI"
 pwsh
 Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
 install-module -name VMware.PowerCLI -force
-'Set-PowerCLIConfiguration -Scope AllUsers -ParticipateInCeip $false -Confirm:$false -InvalidCertificateAction Ignore'
+'Set-PowerCLIConfiguration -Scope AllUsers -ParticipateInCeip \$false -Confirm:\$false -InvalidCertificateAction Ignore'
 exit
 pwsh
 install-module -name Posh-SSH
