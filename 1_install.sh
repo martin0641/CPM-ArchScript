@@ -258,8 +258,7 @@ install-module -name VMware.PowerCLI -force
 'Set-PowerCLIConfiguration -Scope AllUsers -ParticipateInCeip \$false -Confirm:\$false -InvalidCertificateAction Ignore'
 install-module -name Posh-SSH
 Find-Module -Name vmware* | install-module
-exit
-
+bash
 
 yay -S unixbench --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S interbench --answerclean all --answerdiff none --answeredit none --answerupgrade 1
