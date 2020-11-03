@@ -239,7 +239,19 @@ cd /opt/iperf2-code
 ./configure
 make
 sudo make install
-sudo su
+su anon
+
+yay -S unixbench --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+yay -S interbench --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+yay -S pscheduler --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+yay -S nuttcp --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+yay -S phoronix-test-suite-git --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+#yay -S iozone --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+#N
+yay dep cleanup
+yay -Yc
 
 echo "Installing Powershell"
 curl -L -o /tmp/powershell.tar.gz https://github.com/PowerShell/PowerShell/releases/download/v7.1.0-rc.2/powershell-7.1.0-rc.2-linux-x64.tar.gz
@@ -257,26 +269,11 @@ Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
 install-module -name VMware.PowerCLI -force
 'Set-PowerCLIConfiguration -Scope AllUsers -ParticipateInCeip \$false -Confirm:\$false -InvalidCertificateAction Ignore'
 install-module -name Posh-SSH
-#Find-Module -Name vmware* | install-module
-
-bash
-su anon
-
-yay -S unixbench --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-yay -S interbench --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-yay -S pscheduler --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-yay -S nuttcp --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-yay -S phoronix-test-suite-git --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-#yay -S iozone --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-#N
-yay dep cleanup
-yay -Yc
+Find-Module -Name vmware* | install-module
 EOF
 
-#umount -R /mnt
-#swapoff -a
+umount -R /mnt
+swapoff -a
 
-#echo "Arch Linux is ready. You can reboot now!"
-#reboot
+echo "Arch Linux is ready. You can reboot now!"
+reboot
