@@ -211,12 +211,11 @@ chown -R anon:anon /opt/yay-git
 su anon
 cd /opt/yay-git
 makepkg -sicr --noconfirm
-sudo su
 
 echo "Installing S"
 cd /opt
 git clone https://github.com/Algodev-github/S.git
-chown -R anon:anon /opt/S
+sudo chown -R anon:anon /opt/S
 
 echo "Installing iperf3"
 cd /opt
@@ -272,8 +271,8 @@ install-module -name Posh-SSH
 Find-Module -Name vmware* | install-module
 EOF
 
-umount -R /mnt
-swapoff -a
+#umount -R /mnt
+#swapoff -a
 
-echo "Arch Linux is ready. You can reboot now!"
-reboot
+#echo "Arch Linux is ready. You can reboot now!"
+#reboot
