@@ -222,23 +222,21 @@ cd /opt
 git clone https://github.com/esnet/iperf.git
 mv iperf iperf3
 chown -R anon:anon ./iperf3
-sudo su anon
 cd /opt/iperf3
 ./configure
-make
+sudo make
 sudo make install
-sudo su
 
 echo "Installing iperf"
 cd /opt
 git clone https://github.com/esnet/iperf.git
 mv iperf/ iperf2-code
 chown -R anon:anon ./iperf2-code
-su anon
 cd /opt/iperf2-code
 ./configure
 make
-sudo make install
+make install
+
 su anon
 
 yay -S unixbench --answerclean all --answerdiff none --answeredit none --answerupgrade 1
