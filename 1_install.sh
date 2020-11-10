@@ -255,7 +255,7 @@ yay -Yc
 echo "Installing Powershell"
 curl -L -o /tmp/powershell.tar.gz https://github.com/PowerShell/PowerShell/releases/download/v7.1.0-rc.2/powershell-7.1.0-rc.2-linux-x64.tar.gz
 sudo mkdir -p /opt/microsoft/powershell/7
-chown -R anon:anon /opt/microsoft
+sudo chown -R anon:anon /opt/microsoft
 su anon
 sudo tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
 sudo chmod +x /opt/microsoft/powershell/7/pwsh
