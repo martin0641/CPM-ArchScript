@@ -248,11 +248,10 @@ yay -S nuttcp --answerclean all --answerdiff none --answeredit none --answerupgr
 yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S phoronix-test-suite-git --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-#yay -S iozone --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-#N
 yay dep cleanup
 yay -Yc
 
+sudo su
 echo "Installing Powershell"
 curl -L -o /tmp/powershell.tar.gz https://github.com/PowerShell/PowerShell/releases/download/v7.1.0-rc.2/powershell-7.1.0-rc.2-linux-x64.tar.gz
 sudo mkdir -p /opt/microsoft/powershell/7
