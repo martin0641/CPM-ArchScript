@@ -247,6 +247,7 @@ yay -S nuttcp --answerclean all --answerdiff none --answeredit none --answerupgr
 yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S phoronix-test-suite-git --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+yay -S jobber --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay dep cleanup
 yay -Yc
 
@@ -267,7 +268,10 @@ Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
 install-module -name VMware.PowerCLI -force
 'Set-PowerCLIConfiguration -Scope AllUsers -ParticipateInCeip \$false -Confirm:\$false -InvalidCertificateAction Ignore'
 install-module -name Posh-SSH
-Find-Module -Name vmware* | install-module
+Find-Module -Name *vmware* | install-module
+Find-Module -Name *AdminToolbox* | install-module
+Find-Module -Name *PureStorage* | install-module
+Find-Module -Name *AdminToolbox* | install-module
 EOF
 
 #umount -R /mnt
