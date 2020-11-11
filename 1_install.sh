@@ -219,23 +219,23 @@ sudo chown -R anon:anon /opt/S
 
 echo "Installing iperf3"
 cd /opt
-git clone https://github.com/esnet/iperf.git
-mv iperf iperf3
-chown -R anon:anon ./iperf3
+sudo git clone https://github.com/esnet/iperf.git
+sudo mv iperf iperf3
+sudo chown -R anon:anon ./iperf3
 cd /opt/iperf3
-./configure
+sudo ./configure
 sudo make
 sudo make install
 
 echo "Installing iperf"
 cd /opt
-git clone https://github.com/esnet/iperf.git
-mv iperf/ iperf2-code
-chown -R anon:anon ./iperf2-code
+sudo git clone https://github.com/esnet/iperf.git
+sudo mv iperf/ iperf2-code
+sudo chown -R anon:anon ./iperf2-code
 cd /opt/iperf2-code
-./configure
-make
-make install
+sudo ./configure
+sudo make
+sudo make install
 
 su anon
 
