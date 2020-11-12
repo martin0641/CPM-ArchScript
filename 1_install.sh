@@ -247,7 +247,7 @@ yay -S nuttcp --answerclean all --answerdiff none --answeredit none --answerupgr
 yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S phoronix-test-suite-git --answerclean all --answerdiff none --answeredit none --answerupgrade 1
 yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-yay -S jobber --answerclean all --answerdiff none --answeredit none --answerupgrade 1
+yay -S jobber --answerclean all --answerdiff none --answeredit none --answerupgrade 1 --noprovides
 yay dep cleanup
 yay -Yc
 
