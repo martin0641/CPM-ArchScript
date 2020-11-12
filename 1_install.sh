@@ -100,7 +100,7 @@ yes | mkswap /dev/vg0/swap
 swapon /dev/vg0/swap
 
 echo "Installing Arch Linux"
-yes '' | pacstrap /mnt base base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware lvm2 device-mapper e2fsprogs $cpu_microcode cryptsetup networkmanager wget man-db man-pages nano diffutils flatpak lm_sensors neofetch nmon lshw dhclient f2fs-tools grub man-db nano openssh screen vim which bonnie++ python atop sysstat networkmanager nfs-utils open-iscsi fish multipath-tools open-vm-tools iperf time hdparm git fio bc pv gnuplot msmtp mailx gptfdisk aurpublish lynx libzip oniguruma php tcl openmp
+yes '' | pacstrap /mnt base base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware lvm2 device-mapper e2fsprogs $cpu_microcode cryptsetup networkmanager wget man-db man-pages nano diffutils flatpak lm_sensors neofetch nmon lshw dhclient f2fs-tools git grub fish # freetype2 libglvnd man-db nano openssh screen vim which bonnie++ python atop sysstat nfs-utils open-iscsi multipath-tools open-vm-tools iperf time hdparm fio bc pv gnuplot msmtp mailx gptfdisk aurpublish lynx libzip oniguruma php tcl openmp
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -112,8 +112,14 @@ ln -sf /usr/share/zoneinfo/$continent_city /etc/localtime
 hwclock --systohc --localtime
 
 echo "Setting locales"
-echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+echo "LANG=en_US.UTF-8" >> /etc/environment
+echo "LC_ALL=en_US.UTF-8" >> /etc/environment
+echo "LC_MESSAGES=en_US.UTF-8" >> /etc/environment
 echo "LANG=en_US.UTF-8" >> /etc/locale.conf
+echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+echo "LANGUAGE=en_US.UTF-8" >> /etc/locale.conf
+echo "LC_MESSAGES=en_US.UTF-8" >> /etc/locale.conf
+
 locale-gen
 
 echo "Adding persistent keymap"
@@ -135,7 +141,7 @@ usermod -a -G video $user_name
 echo -en "$user_password\n$user_password" | passwd $user_name
 
 echo "Generating initramfs"
-sed -i 's/^HOOKS.*/HOOKS=(base systemd autodetect keyboard sd-vconsole modconf block sd-encrypt sd-lvm2 filesystems fsck)/' /etc/mkinitcpio.conf
+sed -i 's/^HOOKS.*/HOOKS=(base systemd autodetect keyboard sd-vconsole modconf block filesystems sd-encrypt sd-lvm2 filesystems f2fs fsck)/' /etc/mkinitcpio.conf
 sed -i 's/^MODULES.*/MODULES=(ext4 $initramfs_modules)/' /etc/mkinitcpio.conf
 sed -i 's/#COMPRESSION="lz4"/COMPRESSION="lz4"/g' /etc/mkinitcpio.conf
 mkinitcpio -p linux
