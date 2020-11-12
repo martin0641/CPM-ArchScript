@@ -212,66 +212,64 @@ su anon
 cd /opt/yay-git
 makepkg -sicr --noconfirm
 
-echo "Installing S"
-cd /opt
-sudo git clone https://github.com/Algodev-github/S.git
-sudo chown -R anon:anon /opt/S
+#echo "Installing S"
+#cd /opt
+#sudo git clone https://github.com/Algodev-github/S.git
+#sudo chown -R anon:anon /opt/S
 
-echo "Installing iperf3"
-cd /opt
-sudo su
-git clone https://github.com/esnet/iperf.git
-mv iperf iperf3
-chown -R anon:anon ./iperf3
-cd /opt/iperf3
-./configure
-make
-make install
+#echo "Installing iperf3"
+#cd /opt
+#sudo su
+#git clone https://github.com/esnet/iperf.git
+#mv iperf iperf3
+#chown -R anon:anon ./iperf3
+#cd /opt/iperf3
+#./configure
+#make
+#make install
 
-echo "Installing iperf"
-cd /opt
-git clone https://github.com/esnet/iperf.git
-mv iperf/ iperf2-code
-chown -R anon:anon ./iperf2-code
-cd /opt/iperf2-code
-./configure
-make
-make install
+#echo "Installing iperf"
+#cd /opt
+#git clone https://github.com/esnet/iperf.git
+#mv iperf/ iperf2-code
+#chown -R anon:anon ./iperf2-code
+#cd /opt/iperf2-code
+#./configure
+#make
+#make install
 
 su anon
 
-yay -S unixbench --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-yay -S interbench --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-yay -S pscheduler --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-yay -S nuttcp --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-yay -S phoronix-test-suite-git --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-yay -S jobber --noprovides --answerclean all --answerdiff none --answeredit none --answerupgrade 1
-"\n1\n"
-yay -Yc
+#yay -S unixbench --answerclean all --answerdiff none --answeredit none --answerupgrade 1 --removemake
+#yay -S pscheduler --answerclean all --answerdiff none --answeredit none --answerupgrade 1 --removemake
+#yay -S interbench --answerclean all --answerdiff none --answeredit none --answerupgrade 1 --removemake
+#yay -S nuttcp --answerclean all --answerdiff none --answeredit none --answerupgrade 1 --removemake
+#yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1 --removemake
+#yay -S phoronix-test-suite-git --answerclean all --answerdiff none --answeredit none --answerupgrade 1 --removemake
+yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1 --rebuildtree --removemake
+yay -S jobber --noprovides --answerclean all --answerdiff none --answeredit none --answerupgrade 1 --rebuildtree --removemake --clean
 
-sudo su
-echo "Installing Powershell"
-curl -L -o /tmp/powershell.tar.gz https://github.com/PowerShell/PowerShell/releases/download/v7.1.0-rc.2/powershell-7.1.0-rc.2-linux-x64.tar.gz
-sudo mkdir -p /opt/microsoft/powershell/7
-sudo chown -R anon:anon /opt/microsoft
-su anon
-sudo tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
-sudo chmod +x /opt/microsoft/powershell/7/pwsh
-sudo ln -s /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
+#sudo su
+#echo "Installing Powershell"
+#curl -L -o /tmp/powershell.tar.gz https://github.com/PowerShell/PowerShell/releases/download/v7.1.0-rc.2/powershell-7.1.0-rc.2-linux-x64.tar.gz
+#sudo mkdir -p /opt/microsoft/powershell/7
+#sudo chown -R anon:anon /opt/microsoft
+#su anon
+#sudo tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
+#sudo chmod +x /opt/microsoft/powershell/7/pwsh
+#sudo ln -s /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
 sudo su
 
-echo "Installing PowerCLI"
-pwsh
-Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
-install-module -name VMware.PowerCLI -force
-'Set-PowerCLIConfiguration -Scope AllUsers -ParticipateInCeip \$false -Confirm:\$false -InvalidCertificateAction Ignore'
-install-module -name Posh-SSH
-Find-Module -Name *vmware* | install-module
-Find-Module -Name *AdminToolbox* | install-module
-Find-Module -Name *PureStorage* | install-module
-Find-Module -Name *AdminToolbox* | install-module
+#echo "Installing PowerCLI"
+#pwsh
+#Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
+#install-module -name VMware.PowerCLI -force
+#'Set-PowerCLIConfiguration -Scope AllUsers -ParticipateInCeip \$false -Confirm:\$false -InvalidCertificateAction Ignore'
+#install-module -name Posh-SSH
+#Find-Module -Name *vmware* | install-module
+#Find-Module -Name *AdminToolbox* | install-module
+#Find-Module -Name *PureStorage* | install-module
+#Find-Module -Name *AdminToolbox* | install-module
 EOF
 
 #umount -R /mnt
