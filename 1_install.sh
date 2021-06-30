@@ -12,7 +12,7 @@ swap_size="1"
 cpu_vendor=$(cat /proc/cpuinfo | grep vendor | uniq)
 cpu_microcode=""
 kernel_options=""
-initramfs_modules="f2fs"
+initramfs_modules=""
 if [[ $cpu_vendor =~ "AuthenticAMD" ]]
 then
  cpu_microcode="amd-ucode"
@@ -214,18 +214,19 @@ echo 'anon ALL=(ALL:ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo
 echo '%wheel ALL=(ALL:ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo
 echo '%admin ALL=(ALL:ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo
 
-echo "Installing YAY"
-cd /opt
-git clone https://aur.archlinux.org/yay-git.git
-chown -R anon:anon /opt/yay-git
-su anon
-cd /opt/yay-git
-makepkg -sicr --noconfirm
+#echo "Installing YAY"
+#cd /opt
+#git clone https://aur.archlinux.org/yay-git.git
+#chown -R anon:anon /opt/yay-git
+#su anon
+#cd /opt/yay-git
+#makepkg -sicr --noconfirm
 
 #echo "Installing S"
 #cd /opt
 #sudo git clone https://github.com/Algodev-github/S.git
-#sudo chown -R anon:anon /opt/S
+#sudo chown -R anon:anon /opt/Sls
+
 
 #echo "Installing iperf3"
 #cd /opt
