@@ -252,8 +252,8 @@ su anon
 #yay -S nuttcp --answerclean all --answerdiff none --answeredit none --answerupgrade 1 --removemake
 #yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1 --removemake
 #yay -S phoronix-test-suite-git --answerclean all --answerdiff none --answeredit none --answerupgrade 1 --removemake
-yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1 --rebuildtree --removemake
-yay -S jobber --noprovides --answerclean all --answerdiff none --answeredit none --answerupgrade 1 --rebuildtree --removemake --clean
+#yay -S dcfldd --answerclean all --answerdiff none --answeredit none --answerupgrade 1 --rebuildtree --removemake
+#yay -S jobber --noprovides --answerclean all --answerdiff none --answeredit none --answerupgrade 1 --rebuildtree --removemake --clean
 
 #sudo su
 #echo "Installing Powershell"
