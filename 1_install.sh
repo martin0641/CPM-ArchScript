@@ -30,6 +30,10 @@ timedatectl set-ntp true
 echo "Syncing packages database"
 pacman -Sy --noconfirm --needed --asdeps --noprogressbar
 
+echo "Creating Crypt Locking folder"
+mkdir /run/cryptsetup
+chmod 700 /run/cryptsetup
+
 echo "Wiping Disks"
 wipefs -af /dev/nvme0n1 > /dev/null 2>&1
 wipefs -af /dev/nvme0n2 > /dev/null 2>&1
