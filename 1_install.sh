@@ -104,7 +104,7 @@ yes | mkswap /dev/vg0/swap
 swapon /dev/vg0/swap
 
 echo "Installing Arch Linux"
-yes '' | pacstrap /mnt base cryptsetup base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware lvm2 device-mapper e2fsprogs $cpu_microcode networkmanager wget man-db man-pages nano diffutils flatpak lm_sensors neofetch nmon lshw dhclient f2fs-tools git grub fish mesa libglvnd man-db nano openssh screen vim which bonnie++ python atop sysstat nfs-utils open-iscsi freetype2 multipath-tools open-vm-tools iperf time hdparm fio bc pv gnuplot msmtp mailx gptfdisk aurpublish lynx libzip oniguruma php tcl openmp kmod
+yes '' | pacstrap /mnt base cryptsetup base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware lvm2 device-mapper e2fsprogs $cpu_microcode freetype2 networkmanager wget man-db man-pages nano diffutils flatpak lm_sensors neofetch nmon lshw dhclient f2fs-tools git grub fish mesa man-db nano openssh screen vim which bonnie++ python atop sysstat nfs-utils open-iscsi multipath-tools open-vm-tools iperf time hdparm fio bc pv gnuplot msmtp mailx gptfdisk aurpublish lynx libzip oniguruma php tcl openmp kmod libglvnd
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
