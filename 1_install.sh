@@ -16,19 +16,19 @@ initramfs_modules=""
 if [[ $cpu_vendor =~ "AuthenticAMD" ]]
 then
  cpu_microcode="amd-ucode"
- initramfs_modules="amdgpu"
+# initramfs_modules="amdgpu"
 elif [[ $cpu_vendor =~ "GenuineIntel" ]]
 then
  cpu_microcode="intel-ucode"
- kernel_options=" i915.fastboot=1 i915.enable_fbc=1 i915.enable_guc=2"
- initramfs_modules="intel_agp i915"
+# kernel_options=" i915.fastboot=1 i915.enable_fbc=1 i915.enable_guc=2"
+# initramfs_modules="intel_agp i915"
 fi
 
 echo "Updating system clock"
 timedatectl set-ntp true
 
 echo "Syncing packages database"
-pacman -Sy --noconfirm
+pacman -Sy --noconfirm --needed --asdeps
 
 echo "Wiping Disks"
 wipefs -af /dev/nvme0n1 > /dev/null 2>&1
@@ -100,7 +100,7 @@ yes | mkswap /dev/vg0/swap
 swapon /dev/vg0/swap
 
 echo "Installing Arch Linux"
-yes '' | pacstrap /mnt base base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware lvm2 device-mapper e2fsprogs $cpu_microcode cryptsetup networkmanager wget man-db man-pages nano diffutils flatpak lm_sensors neofetch nmon lshw dhclient f2fs-tools git grub fish freetype2 libglvnd man-db nano openssh screen vim which bonnie++ python atop sysstat nfs-utils open-iscsi multipath-tools open-vm-tools iperf time hdparm fio bc pv gnuplot msmtp mailx gptfdisk aurpublish lynx libzip oniguruma php tcl openmp
+yes '' | pacstrap /mnt base base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware lvm2 device-mapper e2fsprogs $cpu_microcode cryptsetup networkmanager wget man-db man-pages nano diffutils flatpak lm_sensors neofetch nmon lshw dhclient f2fs-tools git grub fish freetype2 libglvnd man-db nano openssh screen vim which bonnie++ python atop sysstat nfs-utils open-iscsi multipath-tools open-vm-tools iperf time hdparm fio bc pv gnuplot msmtp mailx gptfdisk aurpublish lynx libzip oniguruma php tcl openmp kmod
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
