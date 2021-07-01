@@ -24,6 +24,12 @@ then
 # initramfs_modules="intel_agp i915"
 fi
 
+echo "Unmounting just in case..."
+umount -l /dev/vg0/root /mnt
+umount -l /dev/nvme0n1p1 /mnt/boot
+rmdir /mnt/boot
+
+
 echo "Updating system clock"
 timedatectl set-ntp true
 
